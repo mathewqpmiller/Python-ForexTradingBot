@@ -1,6 +1,7 @@
 import pandas as pd
 import utils
 import instrument
+import ma_result
 pd.set_option('display.max_columns', None)
 
 def is_trade(row):
@@ -25,7 +26,11 @@ def evaluate_pair(i_pair, mashort, malong, price_data):
     
     print(f"{i_pair.name} {mashort} {malong} trades:{df_trades.shape[0]} gain:{df_trades['GAIN'].sum():.0f}")
     
-    return df_trades['GAIN'].sum()
+    return ma_result.MAResult(
+        df_trades=df_trades,
+        pairname=i_pair.name,
+        params={'mashort' : mashort, 'malong' : malong}   
+    )
 
 
 def get_price_data(pairname, granularity):
@@ -45,9 +50,15 @@ def process_data(ma_short, ma_long, price_data):
         
     return price_data
     
+def process_results(results):
+    results_list = [r.result_ob() for r in results]
+    final_df = pd.DataFrame.from_dict(results_list)
     
+    print(final_df.info())
+    print(final_df.head())
+  
 def run():
-    pairname = "EUR_CHF"
+    pairname = "GBP_JPY"
     granularity = "H1"
     ma_short = [8, 16, 32, 64]
     ma_long = [32, 64, 96, 128, 256]
@@ -56,21 +67,15 @@ def run():
     price_data = get_price_data(pairname, granularity)
     price_data = process_data(ma_short, ma_long, price_data)
 
-    best = -1000000.0
-    b_mashort = 0
-    b_malong = 0
+    results = []
     
     for _malong in ma_long:
         for _mashort in ma_short:
             if _mashort >= _malong:
                 continue
-            res = evaluate_pair(i_pair, _mashort, _malong, price_data.copy())
-            if res > best:
-                best = res
-                b_mashort = _mashort
-                b_malong = _malong
-                
-    print(f"Best:{best:.0f} MASHORT:{b_mashort:.0f} MALONG:{b_malong:.0f}")
+            results.append(evaluate_pair(i_pair, _mashort, _malong, price_data.copy()))
 
+    process_results(results)
+    
 if __name__ == "__main__":
     run()
