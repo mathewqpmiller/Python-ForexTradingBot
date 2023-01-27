@@ -15,9 +15,18 @@ def get_ma_col(ma):
 
 def evaluate_pair(i_pair, mashort, malong, price_data):
     
-    df_ma['DIFF'] = df_ma.MA_16 - df_ma.MA_64
-    df_ma['DIFF_PREV'] = df_ma.DIFF.shift(1)
-    df_ma['IS_TRADE'] = df_ma.apply(is_trade, axis=1)
+    price_data['DIFF'] = price_data[get_ma_col(mashort)] - price_data[get_ma_col(malong)]
+    price_data['DIFF_PREV'] = price_data.DIFF.shift(1)
+    price_data['IS_TRADE'] = price_data.apply(is_trade, axis=1)
+    
+    df_trades = price_data[price_data.IS_TRADE!=0].copy(0)
+    df_trades["DELTA"] = (df_trades.mid_c.diff() / i_pair.pipLocation).shift(-1)
+    df_trades["GAIN"] = df_trades["DELTA"] * df_trades["IS_TRADE"]
+    
+    print(f"{i_pair.name} {mashort} {malong} trades:{df_trades.shape[0]} gain:{df_trades['GAIN'].sum():.0f}")
+    
+    return df_trades['GAIN'].sum()
+
 
 def get_price_data(pairname, granularity):
     df = pd.read_pickle(utils.get_his_data_filename(pairname, granularity))
@@ -38,7 +47,7 @@ def process_data(ma_short, ma_long, price_data):
     
     
 def run():
-    pairname = "GBP_JPY"
+    pairname = "EUR_CHF"
     granularity = "H1"
     ma_short = [8, 16, 32, 64]
     ma_long = [32, 64, 96, 128, 256]
@@ -55,7 +64,13 @@ def run():
         for _mashort in ma_short:
             if _mashort >= _malong:
                 continue
-            ####
+            res = evaluate_pair(i_pair, _mashort, _malong, price_data.copy())
+            if res > best:
+                best = res
+                b_mashort = _mashort
+                b_malong = _malong
+                
+    print(f"Best:{best:.0f} MASHORT:{b_mashort:.0f} MALONG:{b_malong:.0f}")
 
 if __name__ == "__main__":
     run()
