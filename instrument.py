@@ -46,8 +46,20 @@ class Instrument():
             return d[pairname]
         else:
             return None
+        
+    @classmethod
+    def get_pairs_from_string(cls, pair_str):
+        existing_pairs = cls.get_instruments_dict().keys()
+        pairs = pair_str.split(",")
+        
+        pair_list = []
+        for p1 in pairs:
+            for p2 in pairs:
+                p = f"{p1}_{p2}"
+                if p in existing_pairs:
+                    pair_list.append(p)
 
+        return pair_list
+    
 if __name__ == "__main__":
-    # for k,v in Instrument.get_instruments_dict().items():
-    #     print(k,v)
-    print(Instrument.get_instrument_by_name("EUR_USD"))
+  print(Instrument.get_test_pairs("GBP,EUR,USD,CAD,JPY,NZD,CHF"))
