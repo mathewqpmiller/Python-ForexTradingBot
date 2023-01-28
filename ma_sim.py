@@ -4,6 +4,8 @@ from dateutil.parser import *
 import utils
 import instrument
 import ma_result
+from ma_excel import create_excel
+
 pd.set_option('display.max_columns', None)
 
 def is_trade(row):
@@ -77,6 +79,8 @@ def process_results(results):
     
     final_df.to_pickle('ma_test_res.pkl')
     print(final_df.shape, final_df.num_trades.sum())
+    
+    create_excel(final_df)
 
 def get_test_pairs(pair_str):
     existing_pairs = instrument.Instrument.get_instruments_dict().keys()
