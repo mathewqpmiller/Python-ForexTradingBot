@@ -11,6 +11,24 @@ INCREMENTS = {
     'H4' : 240
 }
 
+def get_candles_df(json_response):
+    
+    prices = ['mid', 'bid', 'ask']
+    ohlc = ['o', 'h', 'l', 'c']
+    
+    our_data = []
+    for candle in json_response['candles']:
+        if candle['complete'] == False:
+            continue
+        new_dict = {}
+        new_dict['time'] = candle['time']
+        new_dict['volume'] = candle['volume']
+        for price in prices:
+            for oh in ohlc:
+                new_dict[f"{price}_{oh}"] = candle[price][oh]
+        our_data.append(new_dict)
+    return pd.DataFrame.from_dict(our_data)
+
 def create_file(pair, granularity, api):
     candle_count = 2000
     time_step = INCREMENTS[granularity] * candle_count
@@ -25,9 +43,23 @@ def create_file(pair, granularity, api):
         date_to = date_from + dt.timedelta(minutes=time_step)
         if date_to > end_date:
             date_to = end_date
-        print(date_from, date_to)
-        # collect candles
+        
+        code, json_data = api.fetch_candles(pair,
+                granularity=granularity,
+                date_from=date_from,
+                date_to=date_to)
+        if code == 200 and len(json_data['candles']) > 0:
+            candle_dfs.append(get_candles_df(json_data))
+        elif code != 200:
+            print("ERROR", pair, granularity, date_from, date_to)
+            break
         date_from = date_to
+        
+    final_df = pd.concat(candle_dfs)
+    final_df.drop_duplicates(subset='time', inplace=True)
+    final_df.sort_values(by='time', inplace=True)
+    final_df.to_pickle(utils.get_his_data_filename(pair, granularity))
+    print(f"{pair} {granularity} {final_df.iloc[0].time} {final_df.iloc[-1].time}")
         
 def run_collection():
     pair_list = "GBP,EUR,USD,CAD,JPY,NZD,CHF"
