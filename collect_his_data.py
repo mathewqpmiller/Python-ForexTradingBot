@@ -11,24 +11,6 @@ INCREMENTS = {
     'H4' : 240
 }
 
-def get_candles_df(json_response):
-    
-    prices = ['mid', 'bid', 'ask']
-    ohlc = ['o', 'h', 'l', 'c']
-    
-    our_data = []
-    for candle in json_response['candles']:
-        if candle['complete'] == False:
-            continue
-        new_dict = {}
-        new_dict['time'] = candle['time']
-        new_dict['volume'] = candle['volume']
-        for price in prices:
-            for oh in ohlc:
-                new_dict[f"{price}_{oh}"] = candle[price][oh]
-        our_data.append(new_dict)
-    return pd.DataFrame.from_dict(our_data)
-
 def create_file(pair, granularity, api):
     candle_count = 2000
     time_step = INCREMENTS[granularity] * candle_count
@@ -44,12 +26,13 @@ def create_file(pair, granularity, api):
         if date_to > end_date:
             date_to = end_date
         
-        code, json_data = api.fetch_candles(pair,
+        code, df = api.fetch_candles(pair,
                 granularity=granularity,
                 date_from=date_from,
-                date_to=date_to)
-        if code == 200 and len(json_data['candles']) > 0:
-            candle_dfs.append(get_candles_df(json_data))
+                date_to=date_to,
+                as_df=True)
+        id df is not None and df.empty == False:
+            candle_dfs.append(df)    
         elif code != 200:
             print("ERROR", pair, granularity, date_from, date_to)
             break
