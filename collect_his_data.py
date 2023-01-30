@@ -31,7 +31,7 @@ def create_file(pair, granularity, api):
                 date_from=date_from,
                 date_to=date_to,
                 as_df=True)
-        id df is not None and df.empty == False:
+        if df is not None and df.empty == False:
             candle_dfs.append(df)    
         elif code != 200:
             print("ERROR", pair, granularity, date_from, date_to)
