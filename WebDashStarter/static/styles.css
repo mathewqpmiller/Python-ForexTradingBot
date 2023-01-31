@@ -47,3 +47,11 @@ table th, table td {
 .button:active {
     background-color: #5a6669;
 }
+
+.alert_green {
+    background-color: rgba(21, 182, 99, 0.698);
+}
+
+.alert_red {
+    background-color: rgba(204, 46, 59, 0.753);
+}

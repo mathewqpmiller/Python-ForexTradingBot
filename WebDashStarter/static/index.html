@@ -26,6 +26,8 @@
                         <th>Time</th>
                         <th>Price</th>
                         <th>Direction</th>
+                        <th>Trend</th>
+                        <th>Body %</th>  
                         <th>MACD X</th>
                         <th>BB Signal</th>
                         <th>Hammer</th>
@@ -33,8 +35,7 @@
                         <th>Marubozu</th>
                         <th>Spin.Top</th>
                         <th>Engulfing</th>
-                        <th>Body %</th>
-                        <th>Trend</th>
+                         
                     </tr>
                 </thead>
                 <tbody>
@@ -42,16 +43,16 @@
                         <td>{{ item.PAIR }}</td>
                         <td>{{ item.time }}</td>
                         <td>{{ item.mid_c }}</td>
-                        <td>{{ item.DIRECTION }}</td>
-                        <td>{{ item.MACD_CROSS }}</td>
-                        <td>{{ item.BB_SIGNAL }}</td>
-                        <td>{{ item.HAMMER }}</td>
-                        <td>{{ item.DOJI }}</td>
-                        <td>{{ item.MARUBOZU }}</td>
-                        <td>{{ item.SPINNING_TOP }}</td>
-                        <td>{{ item.ENGULFING }}</td>
+                        <td :class="applyDirectionClass(item.DIRECTION)"></td>
+                        <td :class="applyDirectionClass(item.TREND)"></td>
                         <td>{{ item.BODY_PERC.toFixed(2) }}</td>
-                        <td>{{ item.TREND }}</td>
+                        <td :class="applyDirectionClass(item.MACD_CROSS)"></td>
+                        <td :class="applyDirectionClass(item.BB_SIGNAL)"></td>
+                        <td :class="applyDirectionClass(item.HAMMER)"></td>
+                        <td :class="applyDirectionClass(item.DOJI)"></td>
+                        <td :class="applyDirectionClass(item.MARUBOZU)"></td>
+                        <td :class="applyDirectionClass(item.SPINNING_TOP)"></td>
+                        <td :class="applyDirectionClass(item.ENGULFING)"></td>
                     </tr>
                 </tbody>
             </table>
