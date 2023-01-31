@@ -11,7 +11,46 @@
     <div id="app">
         {{ message }}
         <button @click="loadData">Load Data</button>
-        <pre>{{ JSON.stringify(kpiData, null, 2) }}</pre>
+
+        <dif class="tableContainer">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Pair</th>
+                        <th>Time</th>
+                        <th>Price</th>
+                        <th>Direction</th>
+                        <th>MACD X</th>
+                        <th>BB Signal</th>
+                        <th>Hammer</th>
+                        <th>Doji</th>
+                        <th>Marubozu</th>
+                        <th>Spin.Top</th>
+                        <th>Engulfing</th>
+                        <th>Body %</th>
+                        <th>Trend</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="item in kpiData" >
+                        <td>{{ item.PAIR }}</td>
+                        <td>{{ item.time }}</td>
+                        <td>{{ item.mid_c }}</td>
+                        <td>{{ item.DIRECTION }}</td>
+                        <td>{{ item.MACD_CROSS }}</td>
+                        <td>{{ item.BB_SIGNAL }}</td>
+                        <td>{{ item.HAMMER }}</td>
+                        <td>{{ item.DOJI }}</td>
+                        <td>{{ item.MARUBOZU }}</td>
+                        <td>{{ item.SPINNING_TOP }}</td>
+                        <td>{{ item.ENGULFING }}</td>
+                        <td>{{ item.BODY_PERC.toFixed(2) }}</td>
+                        <td>{{ item.TREND }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </dif>
+
     </div>
     <script src="app.js"></script>
 </body>
