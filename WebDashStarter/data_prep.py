@@ -132,7 +132,7 @@ def apply_trend(df):
     
 
 def get_pair_data(pair, api):
-    code, df = api.fetch_candles(pair, granularity='M5')
+    code, df = api.fetch_candles(pair, granularity='M1')
 
     df['PAIR'] = pair
    
@@ -157,11 +157,23 @@ def prepare_data():
 
     final_df = pd.concat(data)
     final_df['time'] = [dt.datetime.strftime(x, "%Y-%m-%d %H:%M:%S") for x in final_df.time]
-    return json.dumps(final_df.to_dict(orient='records'), indent=2)
+    
+    data_api = {
+        'price_data' : final_df.to_dict(orient='records'),
+        'updated' : dt.datetime.strftime(dt.datetime.utcnow(), "%Y-%m-%d %H:%M:%S")
+    }
+    
+    return json.dumps(data_api, indent=2)
+
+def save_file():
+    api_data = prepare_data()
+    with open('data.json', 'w') as f:
+            f.write(api_data)
 
 if __name__ == "__main__":
-    with open('static/data.json', 'w') as f:
-        f.write(prepare_data())
+    save_file()
+
+    
     
 
 
