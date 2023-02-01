@@ -55,3 +55,7 @@ table th, table td {
 .alert_red {
     background-color: rgba(204, 46, 59, 0.753);
 }
+
+#chartDiv {
+    height: 80vh;
+}

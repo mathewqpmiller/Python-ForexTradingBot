@@ -66,6 +66,6 @@ class OandaAPI():
         code, candles_df = api.fetch_candles(pair, count, granularity)
         if candles_df is not None:
             candles_df['time'] = [dt.datetime.strftime(x, "%m-%d %H:%M") for x in candles_df.time]
-            return candles_df.to_dict(orient='records')
+            return candles_df.to_dict(orient='list')
         return []
         
