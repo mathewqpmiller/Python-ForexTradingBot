@@ -69,10 +69,26 @@ class OandaAPI():
             return status_code, None
 
         return status_code, OandaAPI.candles_to_df(data['candles'])
-    
-    def place_trade(self, pair, units):
+
+    def set_sl_tp(self, price, order_type, trade_id):
         url = f"{defs.OANDA_URL}/accounts/{defs.ACCOUNT_ID}/orders"
-        
+        data = {
+            "order": {
+                "timeInForce": "GTC",
+                "price": str(price), 
+                "type": order_type,
+                "tradeID": str(trade_id)
+            }
+        }
+        status_code, json_data = self.make_request(url, verb='post', data=json.dumps(data), code_ok=201)
+
+        if status_code != 201:
+            return False
+        return True
+
+    def place_trade(self, pair, units, take_profit=None, stop_loss=None):
+        url = f"{defs.OANDA_URL}/accounts/{defs.ACCOUNT_ID}/orders"
+
         data = {
             "order": {
                 "units": units,
@@ -82,13 +98,26 @@ class OandaAPI():
                 "positionFill": "DEFAULT"
             }
         }
-        
-        status_code, json_data =self.make_request(url, verb='post', data=json.dumps(data), code_ok=201)
-        
+
+        status_code, json_data = self.make_request(url, verb='post', data=json.dumps(data), code_ok=201)
+
+        if status_code != 201:
+            return None
+
+        trade_id = None
+        ok = True
+
         if "orderFillTransaction" in json_data and "tradeOpened" in json_data["orderFillTransaction"]:
-            return int(json_data["orderFillTransaction"]["tradeOpened"]["tradeID"])
-        
-        return None
+            trade_id = int(json_data["orderFillTransaction"]["tradeOpened"]["tradeID"])
+            if take_profit is not None:
+                if(self.set_sl_tp(take_profit, "TAKE_PROFIT", trade_id) == False):
+                    ok = False
+            if stop_loss is not None:
+                if(self.set_sl_tp(stop_loss, "STOP_LOSS", trade_id) == False):
+                    ok = False
+
+        return trade_id, ok
+
         
     @classmethod
     def candles_to_df(cls, json_data):
