@@ -17,13 +17,12 @@ class Settings():
     @classmethod
     def load_settings(cls):
         data = json.loads(open('settings.json', 'r').read())
-        return [cls.from_file_ob(x) for x in data]
+        return { k:cls.from_file_ob(v) for k,v in data.items() }
     
     @classmethod
     def get_pairs(cls):
-        settings = cls.load_settings()
-        return [s.pair for s in settings]
+        return list(cls.load_settings().keys())
 
 if __name__ == "__main__":
-    [print(x) for x in Settings.load_settings()]
+    [print(k,v) for k,v in Settings.load_settings().items()]
     print(Settings.get_pairs())
