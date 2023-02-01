@@ -14,7 +14,7 @@
 <body>
     <div id="app">
         <div class="header">
-            <h3>Forex KPI</h3>
+            <h3>Forex KPI {{kpiData.updated}}</h3>
             <button class="button" @click="loadData">Load Data</button>
         </div>
         
@@ -39,7 +39,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="item in kpiData" >
+                    <tr v-for="item in kpiData.price_data" >
                         <td>{{ item.PAIR }}</td>
                         <td>{{ item.time }}</td>
                         <td>{{ item.mid_c }}</td>

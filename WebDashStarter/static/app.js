@@ -3,13 +3,18 @@ var app = new Vue({
     el: '#app',
     data: {
       message: 'Hello Beer!',
-      kpiData: undefined
+      kpiData: {}
+    },
+    created: function() {
+        this.loadData();
     },
     methods: {
         loadData: async function() {
-            const response = await fetch('data.json');
+            console.log("Loading data");
+            const response = await fetch('/kpi_data', {cache: "no-store"});
             const data = await response.json();
             this.kpiData = data;
+            setTimeout(this.loadData, 15000);
         },
         applyOnOffClass: function(val) {
             if(val === 0 || val === false) {
