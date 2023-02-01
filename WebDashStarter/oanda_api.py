@@ -1,6 +1,7 @@
 import requests
 import pandas as pd
 from dateutil.parser import *
+import datetime as dt
 import defs
 
 class OandaAPI():
@@ -58,3 +59,13 @@ class OandaAPI():
         df = pd.DataFrame.from_dict(our_data)
         df["time"] = [parse(x) for x in df.time] 
         return df
+    
+    @classmethod
+    def pricing_api(cls, pair, count=50, granularity="M5"):
+        api = OandaAPI()
+        code, candles_df = api.fetch_candles(pair, count, granularity)
+        if candles_df is not None:
+            candles_df['time'] = [dt.datetime.strftime(x, "%m-%d %H:%M") for x in candles_df.time]
+            return candles_df.to_dict(orient='records')
+        return []
+        
