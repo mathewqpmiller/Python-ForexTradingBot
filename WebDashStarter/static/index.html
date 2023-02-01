@@ -14,11 +14,11 @@
 <body>
     <div id="app">
         <div class="header">
-            <h3>Forex KPI {{kpiData.updated}}</h3>
-            <button class="button" @click="loadData">Load Data</button>
+            <h3>Forex KPI {{ kpiData.updated }}</h3>
+            <button class="button" @click="goHome">Home</button>
         </div>
         
-        <dif class="tableContainer">
+        <div class="tableContainer" v-if="showPrices==false">
             <table>
                 <thead>
                     <tr>
@@ -39,7 +39,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="item in kpiData.price_data" >
+                    <tr @click="rowSelected(item.PAIR)" v-for="item in kpiData.price_data"  :key="item.PAIR" >
                         <td>{{ item.PAIR }}</td>
                         <td>{{ item.time }}</td>
                         <td>{{ item.mid_c }}</td>
@@ -56,8 +56,10 @@
                     </tr>
                 </tbody>
             </table>
-        </dif>
-
+        </div>
+        <div class=""priceChart">
+            <pre>{{ JSON.stringify(priceData, null, 2) }}</pre>
+        </div>
     </div>
     <script src="app.js"></script>
 </body>
