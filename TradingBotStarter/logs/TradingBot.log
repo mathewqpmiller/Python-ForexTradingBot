@@ -1,11 +1,21 @@
-2023-02-02 01:33:52 LogWrapper init()./logs/TradingBot.log
-2023-02-02 01:33:53 Bot started with
-{'AUD_USD': {'pair': 'AUD_USD', 'units': 1000, 'short_ma': 8, 'long_ma': 32},
- 'EUR_USD': {'pair': 'EUR_USD', 'units': 1000, 'short_ma': 4, 'long_ma': 16},
- 'GBP_JPY': {'pair': 'GBP_JPY', 'units': 1000, 'short_ma': 4, 'long_ma': 16},
- 'GBP_USD': {'pair': 'GBP_USD', 'units': 1000, 'short_ma': 8, 'long_ma': 32}}
-2023-02-02 01:33:53 Bot Timings
-{'AUD_USD': {'last_candle': Timestamp('2023-02-02 09:32:00+0000', tz='tzutc()'), 'ready': False},
- 'EUR_USD': {'last_candle': Timestamp('2023-02-02 09:32:00+0000', tz='tzutc()'), 'ready': False},
- 'GBP_JPY': {'last_candle': Timestamp('2023-02-02 09:32:00+0000', tz='tzutc()'), 'ready': False},
- 'GBP_USD': {'last_candle': Timestamp('2023-02-02 09:32:00+0000', tz='tzutc()'), 'ready': False}}
+2023-02-02 03:02:17 LogWrapper init()./logs/TradingBot.log
+2023-02-02 03:02:18 Bot started with
+{'AUD_USD': {'pair': 'AUD_USD', 'units': 1000, 'short_ma': 2, 'long_ma': 8},
+ 'EUR_CHF': {'pair': 'EUR_CHF', 'units': 1000, 'short_ma': 2, 'long_ma': 8},
+ 'EUR_GBP': {'pair': 'EUR_GBP', 'units': 1000, 'short_ma': 2, 'long_ma': 8},
+ 'EUR_USD': {'pair': 'EUR_USD', 'units': 1000, 'short_ma': 2, 'long_ma': 8},
+ 'GBP_JPY': {'pair': 'GBP_JPY', 'units': 1000, 'short_ma': 2, 'long_ma': 8},
+ 'GBP_USD': {'pair': 'GBP_USD', 'units': 1000, 'short_ma': 2, 'long_ma': 8}}
+2023-02-02 03:02:18 Bot Timings
+{'AUD_USD': {'last_candle': Timestamp('2023-02-02 11:01:00+0000', tz='tzutc()'), 'ready': False},
+ 'EUR_CHF': {'last_candle': Timestamp('2023-02-02 11:01:00+0000', tz='tzutc()'), 'ready': False},
+ 'EUR_GBP': {'last_candle': Timestamp('2023-02-02 11:01:00+0000', tz='tzutc()'), 'ready': False},
+ 'EUR_USD': {'last_candle': Timestamp('2023-02-02 11:01:00+0000', tz='tzutc()'), 'ready': False},
+ 'GBP_JPY': {'last_candle': Timestamp('2023-02-02 11:01:00+0000', tz='tzutc()'), 'ready': False},
+ 'GBP_USD': {'last_candle': Timestamp('2023-02-02 11:01:00+0000', tz='tzutc()'), 'ready': False}}
+2023-02-02 03:03:01 EUR_USD new candle 2023-02-02 11:02:00+00:00
+2023-02-02 03:03:01 GBP_JPY new candle 2023-02-02 11:02:00+00:00
+2023-02-02 03:03:01 AUD_USD new candle 2023-02-02 11:02:00+00:00
+2023-02-02 03:03:01 GBP_USD new candle 2023-02-02 11:02:00+00:00
+2023-02-02 03:03:02 EUR_CHF new candle 2023-02-02 11:02:00+00:00
+2023-02-02 03:03:02 Ready to trade EUR_USD

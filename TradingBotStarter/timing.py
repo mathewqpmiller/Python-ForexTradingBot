@@ -1,6 +1,7 @@
 from utils import time_utc
 import datetime as dt
 
+
 class Timing():
     def __init__(self, last_candle):
         self.last_candle = last_candle
