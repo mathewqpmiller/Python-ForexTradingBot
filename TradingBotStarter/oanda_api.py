@@ -53,7 +53,7 @@ class OandaAPI():
         else:
             return None
     
-    def fetch_candles(self, pair_name, granularity="H1"):
+    def fetch_candles(self, pair_name, count=10, granularity="H1"):
         url = f"{defs.OANDA_URL}/instruments/{pair_name}/candles"
 
         params = dict(
@@ -69,6 +69,13 @@ class OandaAPI():
             return status_code, None
 
         return status_code, OandaAPI.candles_to_df(data['candles'])
+    
+    def last_complete_candle(self, pair_name, granularity="H1"):
+        code, df = self.fetch_candles(pair_name, granularity=granularity)
+        if df is None or df.shape[0] == 0:
+            return None
+        return df.iloc[-1].time
+    
     
     def close_trade(self, trade_id):
         url = f"{defs.OANDA_URL}/accounts/{defs.ACCOUNT_ID}/trades/{trade_id}/close"
@@ -151,3 +158,4 @@ if __name__ == "__main__":
     api = OandaAPI()
     res, df = api.fetch_candles("EUR_USD")
     print(df)
+    print(api.last_complete_candle("EUR_USD"))
