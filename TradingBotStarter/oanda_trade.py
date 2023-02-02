@@ -4,7 +4,7 @@ class OandaTrade():
     def __init__(self, oanda_ob):
         self.unrealizedPL = float(oanda_ob['unrealizedPL'])
         self.currentUnits = int(oanda_ob['currentUnits'])
-        self.id = int(oanda_ob['id'])
+        self.trade_id = int(oanda_ob['id'])
         self.openTime = parse(oanda_ob['openTime'])
         self.instrument = oanda_ob['instrument']
 
